@@ -12,8 +12,5 @@ int main(int argc, char const *argv[])
 	void (*test)(void);
 	char *error;
 	handle = dlopen("./libsteamSearch.so", RTLD_LAZY);
-
-	searchGame();
-	searchUser();
 	return 0;
 }
