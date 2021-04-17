@@ -3,7 +3,7 @@
 
 extern "C"
 {
-	void searchUser(void *ptr);
-	void searchGame(void *ptr);
+	void searchUser();
+	void searchGame();
 }
 #endif //STEAMSEARCH_H

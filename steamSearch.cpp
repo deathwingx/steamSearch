@@ -3,12 +3,12 @@
 
 using namespace std;
 
-void searchUser(void *ptr)
+void searchUser()
 {
 	cout << "User" << endl;
 }
 
-void searchGame(void *ptr)
+void searchGame()
 {
 	cout << "Game" << endl;
 }

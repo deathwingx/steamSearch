@@ -2,14 +2,14 @@ LD_FLAGS += -L$(DIR) -Wl,-R$(DIR) '-Wl/home/joey/Documents/CSI-345/steamSearch'
 CXX = g++
 
 
-main: main.cc libtest.so
-	$(CXX) $(CFLAGS) -o main main.cc -ldl -L/home/joey/Documents/CSI-345/steamSearch -ltest
+test: test.cpp libsteamSearch.so
+	$(CXX) $(CFLAGS) -o test test.cpp -ldl -L/home/joey/Documents/CSI-345/steamSearch -lsteamSearch
 
-test.o: test.cc
-	$(CXX) -c test.cc -o test.o -fPIC
+steamSearch.o: steamSearch.cpp
+	$(CXX) -c steamSearch.cpp -o steamSearch.o -fPIC
 
-libtest.so: test.o
-	$(CXX) -shared  -Wl,-soname,libtest.so -o libtest.so test.o -fPIC
+libsteamSearch.so: steamSearch.o
+	$(CXX) -shared  -Wl,-soname,libsteamSearch.so -o libsteamSearch.so steamSearch.o -fPIC
 
 clean:
 	rm -rf *.o *.so
