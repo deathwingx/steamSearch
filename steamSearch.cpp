@@ -4,10 +4,34 @@
 #include <iostream>
 
 using namespace std;
-
-void searchFriend(char const *friendName)
+//initialize steam library and default variables
+steamSearch::steamSearch()
 {
-	int nFriends = SteamFriends()->GetFriendCount(k_EFriendFlagImmediate);
+	void *handle;
+	handle = dlopen("libsteam_api.so", RTLD_LAZY);
+	AppId_t appID = 480;
+	if (SteamAPI_RestartAppIfNecessary(appID)) // Replace with your App ID
+	{
+		cout << "Restart" << endl;
+	}
+
+	if (!SteamAPI_Init())
+	{
+		printf("Fatal Error - Steam must be running to play this game (SteamAPI_Init() failed).\n");
+		exit(1);
+	}
+	friendList = nullptr;
+	userName = SteamFriends()->GetPersonaName();
+	}
+
+steamSearch::~steamSearch()
+{
+}
+
+//search users friend list
+void steamSearch::searchFriend(char const *friendName)
+{
+		int nFriends = SteamFriends()->GetFriendCount(k_EFriendFlagImmediate);
 	if (nFriends == -1)
 	{
 		printf("GetFriendCount returned -1, the current user is not logged in.\n");
@@ -24,6 +48,22 @@ void searchFriend(char const *friendName)
 	}
 }
 
-void searchGame(char const *gameName)
+//search steam for Username
+void steamSearch::searchUser(char const *userName)
+{
+}
+
+//search steam for game by name
+void steamSearch::searchGame(char const *gameName)
+{
+}
+
+//show time played for games in library
+void steamSearch::timePlayed()
+{
+}
+
+//print out library
+void steamSearch::seeLibrary()
 {
 }

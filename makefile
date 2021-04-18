@@ -12,4 +12,4 @@ libsteamSearch.so: steamSearch.o
 	$(CXX) -shared  -Wl,-soname,libsteamSearch.so -o libsteamSearch.so steamSearch.o -fPIC
 
 clean:
-	rm -rf *.o *.so
+	rm -rf *.o *.so main steamSearch
