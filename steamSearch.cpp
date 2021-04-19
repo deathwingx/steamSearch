@@ -1,16 +1,17 @@
 #include "steamSearch.h"
-#include "steam/steam_api.h"
+//#include "steam/steam_api.h"
 #include <dlfcn.h>
 #include <iostream>
+
 
 using namespace std;
 //initialize steam library and default variables
 steamSearch::steamSearch()
 {
-	void *handle;
+/* 	void *handle;
 	handle = dlopen("libsteam_api.so", RTLD_LAZY);
 	AppId_t appID = 480;
-	if (SteamAPI_RestartAppIfNecessary(appID)) // Replace with your App ID
+	if (SteamAPI_RestartAppIfNecessary(480)) // Replace with your App ID
 	{
 		cout << "Restart" << endl;
 	}
@@ -22,16 +23,20 @@ steamSearch::steamSearch()
 	}
 	friendList = nullptr;
 	userName = SteamFriends()->GetPersonaName();
-	}
+	userLevel = SteamUser()->GetPlayerSteamLevel();
+	friendCount = SteamFriends()->GetFriendCount(k_EFriendFlagImmediate);
+	userID = SteamUser()->GetSteamID().ConvertToUint64(); */
+}
 
 steamSearch::~steamSearch()
 {
+	//SteamAPI_Shutdown();
 }
 
 //search users friend list
 void steamSearch::searchFriend(char const *friendName)
 {
-		int nFriends = SteamFriends()->GetFriendCount(k_EFriendFlagImmediate);
+/* 	int nFriends = SteamFriends()->GetFriendCount(k_EFriendFlagImmediate);
 	if (nFriends == -1)
 	{
 		printf("GetFriendCount returned -1, the current user is not logged in.\n");
@@ -45,7 +50,7 @@ void steamSearch::searchFriend(char const *friendName)
 		CSteamID friendSteamID = SteamFriends()->GetFriendByIndex(i, k_EFriendFlagImmediate);
 		const char *friendName = SteamFriends()->GetFriendPersonaName(friendSteamID);
 		printf("Friend %d: %lld - %s\n", i, friendSteamID.ConvertToUint64(), friendName);
-	}
+	} */
 }
 
 //search steam for Username
@@ -66,4 +71,17 @@ void steamSearch::timePlayed()
 //print out library
 void steamSearch::seeLibrary()
 {
+}
+
+void steamSearch::showProfile()
+{
+/* 	cout << "Username: " << userName << endl;
+	cout << "Profile Level: " << userLevel << endl;
+	cout << "Number of Friends: " << friendCount << endl;
+	cout << "Games in library: " << endl; */
+}
+
+void steamSearch::showFriendsProfile(char const *friendUserName)
+{
+
 }

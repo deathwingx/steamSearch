@@ -1,6 +1,10 @@
 #include "steamSearch.h"
 #include <dlfcn.h>
 #include <iostream>
+#include "cpr/cpr.h"
+
+#define WEBAPI_KEY "743F1162E2E66B718D5C10B2CD9FF01B"
+#define STEAMID "76561198081634808"
 
 using namespace std;
 
@@ -12,13 +16,14 @@ int menu()
 	cout << "3. Search for Friend" << endl;
 	cout << "4. See Time Played" << endl;
 	cout << "5. See Library" << endl;
-	cout << "6. Quit" << endl;
+	cout << "6. Show Profile" << endl;
+	cout << "7. Quit" << endl;
 	cout << "What is your answer: ";
 	cin >> ans;
 	return ans;
 }
 
-void action(int ans)
+void action(int ans, steamSearch& searchsteam)
 {
 	switch (ans)
 	{
@@ -27,12 +32,14 @@ void action(int ans)
 	case 2:
 		break;
 	case 3:
-		break;
+		searchsteam.searchFriend("sdf");
 	case 4:
 		break;
 	case 5:
 		break;
 	case 6:
+		searchsteam.showProfile();
+	case 7:
 		exit(0);
 	default:
 		break;
@@ -42,7 +49,15 @@ void action(int ans)
 int main()
 {
 	steamSearch search;
-	int answer;
-	action(menu());
+	cpr::Parameters param = cpr::Parameters{{"key", WEBAPI_KEY}, {"steamid", STEAMID}, {"appid", "1091500"}, {"format", "xml"}};
+	cpr::Response res = cpr::Get(cpr::Url{"https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v2/"}, param);
+	cout << res.status_code << endl;
+	cout << res.text << endl;
+	int answer = -1;
+	while (answer != 7)
+	{
+		answer = menu();
+		action(answer, search);
+	}
 	return 0;
 }

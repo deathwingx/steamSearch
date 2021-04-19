@@ -1,9 +1,9 @@
-LD_FLAGS += -L$(DIR) -Wl,-R$(DIR) '-Wl/home/joey/Documents/CSI-345/steamSearch'
+LD_FLAGS += -L$(DIR) -Wl,-R$(DIR) '-Wl/home/joey/Documents/CSI-345/steamSearch' -L${DIR} -Wl, -R{DIR} '-Wl//home/joey/Documents/CSI-345/steamSearch/lib'
 CXX = g++
 
 
 main: main.cpp libsteamSearch.so
-	$(CXX) $(CFLAGS) -o main main.cpp -ldl -L/home/joey/Documents/CSI-345/steamSearch -lsteamSearch -L/home/joey/Documents/CSI-345/steamSearch/linux64 -lsteam_api
+	$(CXX) $(CFLAGS) -o main main.cpp -ldl -L/home/joey/Documents/CSI-345/steamSearch -lsteamSearch -L/home/joey/Documents/CSI-345/steamSearch/linux64 -lsteam_api -L/home/joey/Documents/CSI-345/steamSearch/cpr/lib -lcpr -lcurl -lcurlpp -L/home/joey/Documents/CSI-345/steamSearch/cpr/lib -lcurl-d
 
 steamSearch.o: steamSearch.cpp
 	$(CXX) -c steamSearch.cpp -o steamSearch.o -fPIC
