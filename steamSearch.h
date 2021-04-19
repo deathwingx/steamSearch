@@ -1,6 +1,7 @@
 #ifndef STEAMSEARCH_H
 #define STEAMSEARCH_H
-//#include "steam/steam_api.h"
+#include "cpr/cpr.h"
+#include <string.h>
 
 extern "C"
 {
@@ -10,13 +11,13 @@ extern "C"
 		//functions
 		steamSearch();
 		~steamSearch();
-		void searchFriend(char const *);
-		void searchUser(char const *);
-		void searchGame(char const *);
+		void searchFriend(char *);
+		void searchUser(char *);
+		void searchGame(char *);
 		void timePlayed();
 		void seeLibrary();
 		void showProfile();
-		void showFriendsProfile(char const *);
+		void showFriendsProfile(char *);
 		//variables
 
 	private:
@@ -26,6 +27,20 @@ extern "C"
 		int userLevel;
 		int numOfGames;
 		int friendCount;
+	};
+
+	class JSONParser
+	{
+	public:
+		//functions
+		JSONParser();
+		~JSONParser();
+		char *convertToVec(cpr::Response);
+		//variables
+		char *vectorResult[1][1];
+
+	private:
+		//variables
 	};
 }
 #endif //STEAMSEARCH_H

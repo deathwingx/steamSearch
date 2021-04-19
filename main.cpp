@@ -23,7 +23,7 @@ int menu()
 	return ans;
 }
 
-void action(int ans, steamSearch& searchsteam)
+void action(int ans, steamSearch &searchsteam)
 {
 	switch (ans)
 	{
@@ -32,7 +32,7 @@ void action(int ans, steamSearch& searchsteam)
 	case 2:
 		break;
 	case 3:
-		searchsteam.searchFriend("sdf");
+		break;
 	case 4:
 		break;
 	case 5:
@@ -49,10 +49,13 @@ void action(int ans, steamSearch& searchsteam)
 int main()
 {
 	steamSearch search;
-	cpr::Parameters param = cpr::Parameters{{"key", WEBAPI_KEY}, {"steamid", STEAMID}, {"appid", "1091500"}, {"format", "xml"}};
-	cpr::Response res = cpr::Get(cpr::Url{"https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v2/"}, param);
+	cpr::Parameters param = cpr::Parameters{{"key", WEBAPI_KEY}, {"steamid", STEAMID}};
+	cpr::Response res = cpr::Get(cpr::Url{"https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v1/"}, param);
 	cout << res.status_code << endl;
+	std::string test = res.text;
 	cout << res.text << endl;
+	JSONParser jsp;
+	jsp.convertToVec(res);
 	int answer = -1;
 	while (answer != 7)
 	{
