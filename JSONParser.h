@@ -10,8 +10,8 @@ extern "C"
 		//variables
 		struct pair
 		{
-			int *key;
-			int *value;
+			char *key;
+			char *value;
 		};
 		struct node
 		{

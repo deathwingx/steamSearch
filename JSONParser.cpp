@@ -51,9 +51,13 @@ void JSONParser::insertNewNode(void *data, void *dataTwo)
 
 void JSONParser::initArray(node *ref)
 {
-	ref->data = (pair *)malloc(5*sizeof(int));
+	cout << sizeof(ref) << endl;
+	node *newNode = new node;
+	newNode->data = (pair *)malloc(100000 * sizeof(pair));
+	ref = newNode;
 	if (ref->data == NULL)
 		cout << "failed" << endl;
+	cout << sizeof(ref) << endl;
 }
 
 void JSONParser::addToNode(node *current, void *data, void *dataTwo)
