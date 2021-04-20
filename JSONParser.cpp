@@ -23,8 +23,8 @@ void JSONParser::insertNewNode(void *data, void *dataTwo)
 	string *strrecastTwo = static_cast<string *>(dataTwo);
 	node *newNode = new node;
 	node *last = HEAD;
-	newNode->data[0]->key = strrecast;
-	newNode->data[0]->value = strrecastTwo;
+	newNode->data[0].key = strrecast;
+	newNode->data[0].value = strrecastTwo;
 	newNode->used += 1;
 	newNode->next = NULL;
 	if (HEAD == NULL)

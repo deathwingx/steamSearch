@@ -14,7 +14,7 @@ extern "C"
 		};
 		struct node
 		{
-			pair *data[5];
+			pair data[5];
 			int size = 5;
 			int used = 0;
 			node *next;
