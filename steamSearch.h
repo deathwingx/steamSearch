@@ -1,7 +1,6 @@
 #ifndef STEAMSEARCH_H
 #define STEAMSEARCH_H
 #include "cpr/cpr.h"
-#include <string.h>
 
 extern "C"
 {
@@ -22,25 +21,24 @@ extern "C"
 
 	private:
 		//variables
-		char const *friendList;
-		char const *userName;
-		int userLevel;
-		int numOfGames;
-		int friendCount;
 	};
 
 	class JSONParser
 	{
 	public:
+		struct node
+		{
+			void *data[2];
+			node *next;
+			node *previous;
+		};
 		//functions
 		JSONParser();
 		~JSONParser();
-		char *convertToVec(cpr::Response);
+		char *parseResponse(cpr::Response, node *);
 		//variables
-		char *vectorResult[1][1];
-
-	private:
-		//variables
+		void push(node **, void *);
+		node HEAD;
 	};
 }
 #endif //STEAMSEARCH_H

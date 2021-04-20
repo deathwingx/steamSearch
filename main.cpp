@@ -55,7 +55,6 @@ int main()
 	std::string test = res.text;
 	cout << res.text << endl;
 	JSONParser jsp;
-	jsp.convertToVec(res);
 	int answer = -1;
 	while (answer != 7)
 	{

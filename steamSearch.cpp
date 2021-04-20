@@ -1,6 +1,7 @@
 #include "steamSearch.h"
 #include <dlfcn.h>
 #include <iostream>
+#include <stdlib.h>
 
 using namespace std;
 //initialize steam library and default variables
@@ -53,10 +54,10 @@ JSONParser::~JSONParser()
 {
 }
 
-char *JSONParser::convertToVec(cpr::Response respone)
+char *JSONParser::parseResponse(cpr::Response respone, JSONParser::node *head)
 {
-	char *re;
-	int size = strlen(respone.text);
-	cout << size <<endl;
-	return re;
+}
+
+void JSONParser::push(node **head_ref, void *data)
+{
 }
