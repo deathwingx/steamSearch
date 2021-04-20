@@ -1,21 +1,35 @@
+#ifndef JSONPARSER_H
+#define JSONPARSER_H
 #include "cpr/cpr.h"
 
-using namespace std;
-
-class JSONParser
+extern "C"
 {
-public:
-	struct node
+	class JSONParser
 	{
-		string data[2];
-		node *next;
-		node *previous;
+	public:
+		struct pair
+		{
+			void *key;
+			void *value;
+		};
+		struct node
+		{
+			pair *data[5];
+			int size = 5;
+			int used = 0;
+			node *next;
+			node *previous;
+		};
+		//functions
+		void parseResponse(cpr::Response, node *);
+		void printList(node *);
+		//variables
+		node *HEAD = NULL;
+
+	private:
+		void insertNewNode(void *, void *);
+		void addToNode(node *, void *, void *);
+		void increaseSize(node *);
 	};
-	//functions
-	JSONParser();
-	~JSONParser();
-	void parseResponse(cpr::Response, node *);
-	//variables
-	void push(node **, string);
-	node HEAD;
-};
+}
+#endif //JSONPARSER_H

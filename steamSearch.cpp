@@ -45,21 +45,3 @@ void steamSearch::showProfile()
 void steamSearch::showFriendsProfile(char *friendUserName)
 {
 }
-
-//JSONParser definitions
-
-JSONParser::JSONParser()
-{
-}
-
-JSONParser::~JSONParser()
-{
-}
-
-char *JSONParser::parseResponse(cpr::Response respone, JSONParser::node *head)
-{
-}
-
-void JSONParser::push(node **head_ref, void *data)
-{
-}

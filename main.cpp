@@ -1,4 +1,5 @@
 #include "steamSearch.h"
+#include "JSONParser.h"
 #include <dlfcn.h>
 #include <iostream>
 #include "cpr/cpr.h"

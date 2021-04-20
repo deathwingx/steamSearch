@@ -22,23 +22,5 @@ extern "C"
 	private:
 		//variables
 	};
-
-	class JSONParser
-	{
-	public:
-		struct node
-		{
-			void *data[2];
-			node *next;
-			node *previous;
-		};
-		//functions
-		JSONParser();
-		~JSONParser();
-		char *parseResponse(cpr::Response, node *);
-		//variables
-		void push(node **, void *);
-		node HEAD;
-	};
 }
 #endif //STEAMSEARCH_H

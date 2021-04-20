@@ -1,15 +1,21 @@
-LD_FLAGS += -L$(DIR) -Wl,-R$(DIR) '-Wl/home/joey/Documents/CSI-345/steamSearch' -L${DIR} -Wl, -R{DIR} '-Wl//home/joey/Documents/CSI-345/steamSearch/lib'
+LD_FLAGS += -L$(DIR) -Wl,-R$(DIR) '-Wl/home/joey/Documents/CSI-345/steamSearch'
 CXX = g++
 
 
-main: main.cpp libsteamSearch.so
-	$(CXX) $(CFLAGS) -o main main.cpp -ldl -L/home/joey/Documents/CSI-345/steamSearch -lsteamSearch -L/home/joey/Documents/CSI-345/steamSearch/linux64 -lsteam_api -L/home/joey/Documents/CSI-345/steamSearch/cpr/lib -lcpr -lcurl -lcurlpp -L/home/joey/Documents/CSI-345/steamSearch/cpr/lib -lcurl-d
+main: main.cpp libsteamSearch.so libJSONParser.so
+	$(CXX) $(CFLAGS) -o main main.cpp -ldl -L/home/joey/Documents/CSI-345/steamSearch -lsteamSearch -L/home/joey/Documents/CSI-345/steamSearch/linux64 -lsteam_api -L/home/joey/Documents/CSI-345/steamSearch/cpr/lib -lcpr -lcurl -lcurlpp -L/home/joey/Documents/CSI-345/steamSearch/cpr/lib -lcurl-d -L/home/joey/Documents/CSI-345/steamSearch -lJSONParser
 
 steamSearch.o: steamSearch.cpp
 	$(CXX) -c steamSearch.cpp -o steamSearch.o -fPIC
 
 libsteamSearch.so: steamSearch.o
 	$(CXX) -shared  -Wl,-soname,libsteamSearch.so -o libsteamSearch.so steamSearch.o -fPIC
+
+JSONParser.o: JSONParser.cpp
+	$(CXX) -c JSONParser.cpp -o JSONParser.o -fPIC
+
+libJSONParser.so: JSONParser.o
+	$(CXX) -shared -Wl,-soname,libJSONParser.so -o libJSONParser.so JSONParser.o -fPIC
 
 clean:
 	rm -rf *.o *.so main steamSearch
