@@ -46,9 +46,17 @@ void JSONParser::addToNode(node *current, void *data, void *dataTwo)
 
 void JSONParser::increaseSize(node *current)
 {
+	//need help here
 	int newSize = current->size + 5;
-	void *ptr = (void *)malloc(newSize * sizeof(string));
-	current->size += 5;
+	pair *newPair = (pair *)malloc((newSize) * sizeof(pair));
+	if (newPair == NULL)
+		cout << "failed to allocate memory" << endl;
+	else
+	{
+		for (int x = 0; x < current->size; x++)
+			//current->data=newPair;
+		current->size += 5;
+	}
 	return;
 }
 
