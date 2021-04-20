@@ -46,6 +46,8 @@ void steamSearch::showFriendsProfile(char *friendUserName)
 {
 }
 
+//JSONParser definitions
+
 JSONParser::JSONParser()
 {
 }
