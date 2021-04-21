@@ -17,6 +17,7 @@ JSONParser::~JSONParser()
 void JSONParser::parseResponse(cpr::Response res, node *head_ref)
 {
 	string result = static_cast<string>(res.text);
+	node *current = head_ref;
 	result.pop_back();
 	string key, value, temp;
 	bool openQuotes = false;
@@ -28,25 +29,47 @@ void JSONParser::parseResponse(cpr::Response res, node *head_ref)
 	{
 		if (result[x] != '[' && nonInfo == true)
 			continue;
-		else if (result[x]=='[' && nonInfo==true)
+		else if (result[x] == '[' && nonInfo == true)
 			nonInfo = false;
 		else if (result[x] != '[' && nonInfo == false)
 		{
 			if (result[x] == '{')
 			{
 				bracketOpen = true;
+				current = insertNewNode(&HEAD);
+				continue;
 			}
 			else if (result[x] == '}')
 			{
 				bracketOpen = false;
-				//insertNode here
+			}
+			else if (result[x] == ':')
+			{
+				if (result[x + 1] != '\"')
+				{
+					openQuotes = true;
+					quotes += 1;
+					x += 1;
+				}
+			}
+			else if (result[x] == ',' && keyFound == true)
+			{
+				value = temp;
+				temp = "";
+				cout << value << endl;
+				keyFound = false;
+				value = "";
+				key = "";
+				quotes = 0;
+				addToNode(current, &key, &value);
+				//addtoNode here
+				continue;
 			}
 			if (result[x] == '\"')
 			{
-				x += 1;
 				if (quotes == 0)
 				{
-					temp += result[x];
+					x += 1;
 					quotes += 1;
 					openQuotes = true;
 				}
@@ -58,45 +81,59 @@ void JSONParser::parseResponse(cpr::Response res, node *head_ref)
 					{
 						value = temp;
 						temp = "";
+						cout << value << endl;
+						keyFound = false;
+						addToNode(current, &key, &value);
+						value = "";
+						key = "";
+						//addtoNode here
+						continue;
 					}
 					else if (keyFound == false)
 					{
 						key = temp;
 						temp = "";
-						cout << key << endl;
-						cout << temp << endl;
-						//addtoNode here
+						cout << key << "   ";
+						keyFound = true;
 					}
 				}
-				if (bracketOpen==true && openQuotes==true)
 			}
+
+			if (bracketOpen == true && openQuotes == true)
+				temp += result[x];
 		}
 	}
 }
 
 //insert new node into linked list
-void JSONParser::insertNewNode(node **ref, void *data, void *dataTwo)
+JSONParser::node *JSONParser::insertNewNode(node **ref)
 {
-	string *key = static_cast<string *>(data);
-	string *value = static_cast<string *>(dataTwo);
+	size += 1;
+	string *key, *value;
 	struct node *newNode = new node;
 	struct node *end = HEAD;
+	key = (string *)malloc(size * sizeof(string *));
+	value = (string *)malloc(size * sizeof(string *));
 	newNode->next = NULL;
 	newNode->data->key = key;
 	newNode->data->value = value;
 	if (HEAD == NULL)
 	{
 		HEAD = newNode;
-		return;
+		return HEAD;
 	}
+	node *temp = HEAD;
+	temp = (node *)realloc(HEAD, size * sizeof(HEAD));
+	HEAD = temp;
+	end = HEAD;
 	while (end->next != NULL)
 		end = end->next;
 	end->next = newNode;
 	newNode->previous = end;
-	return;
+	return newNode;
 }
 
-void JSONParser::addToNode(node *current, void *data, void *dataTwo)
+void JSONParser::addToNode(node *current, void *key, void *value)
 {
 	//get data size to allocate memory first
 }

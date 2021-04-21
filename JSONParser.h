@@ -16,7 +16,6 @@ extern "C"
 		struct node
 		{
 			pair *data;
-			int size = 1;
 			node *next;
 			node *previous;
 		};
@@ -28,10 +27,11 @@ extern "C"
 		void printList(node *);
 
 	private:
-		void insertNewNode(node **, void *, void *);
+		node *insertNewNode(node **);
 		void addToNode(node *, void *, void *);
 		void increaseSize(node *);
 		void initArray(node **);
+		int size = 1;
 	};
 }
 #endif //JSONPARSER_H

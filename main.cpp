@@ -47,14 +47,65 @@ void action(int ans, steamSearch &searchsteam)
 	}
 }
 
+bool checkForError(cpr::Response error)
+{
+	int code = error.status_code;
+	switch (code)
+	{
+	case 200:
+		return false;
+	case 400:
+	{
+		cout << "Bad Request" << endl;
+		return true;
+	}
+	case 401:
+	{
+		cout << "Unauthorized" << endl;
+		return true;
+	}
+	case 403:
+	{
+		cout << "Forbidden" << endl;
+		return true;
+	}
+	case 404:
+	{
+		cout << "Not Found" << endl;
+		return true;
+	}
+	case 429:
+	{
+		cout << "Too Many Request" << endl;
+		return true;
+	}
+	case 500:
+	{
+		cout << "Internal Server Error" << endl;
+		return true;
+	}
+	case 503:
+	{
+		cout << "Service Unavailable" << endl;
+		return true;
+	}
+	}
+	return true;
+}
+
 int main()
 {
 	steamSearch search;
 	cpr::Parameters param = cpr::Parameters{{"key", WEBAPI_KEY}, {"steamid", STEAMID}};
-	cpr::Response res = cpr::Get(cpr::Url{"https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v1/"}, param);
+	cpr::Response res = cpr::Get(cpr::Url{"https://api.steampowered.com/ISteamUser/GetFriendList/v1/"}, param);
 	JSONParser jsp;
+	bool error = checkForError(res);
+	if (error==true)
+		exit(1);
 	jsp.parseResponse(res, jsp.HEAD);
+	//jsp.printList(jsp.HEAD);
 	int answer = -1;
+	//cout << res.text << endl;
 	while (answer != 7)
 	{
 		answer = menu();
