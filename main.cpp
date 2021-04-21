@@ -52,8 +52,8 @@ int main()
 	steamSearch search;
 	cpr::Parameters param = cpr::Parameters{{"key", WEBAPI_KEY}, {"steamid", STEAMID}};
 	cpr::Response res = cpr::Get(cpr::Url{"https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v1/"}, param);
-	std::string test = res.text;
 	JSONParser jsp;
+	jsp.parseResponse(res, jsp.HEAD);
 	int answer = -1;
 	while (answer != 7)
 	{

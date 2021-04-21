@@ -10,18 +10,16 @@ extern "C"
 		//variables
 		struct pair
 		{
-			char *key;
-			char *value;
+			void *key;
+			void *value;
 		};
 		struct node
 		{
 			pair *data;
-			int size = 5;
-			int used = 0;
+			int size = 0;
 			node *next;
-			node *previous;
 		};
-		node *HEAD=NULL;
+		node *HEAD = NULL;
 		//functions
 		JSONParser();
 		~JSONParser();
@@ -29,10 +27,10 @@ extern "C"
 		void printList(node *);
 
 	private:
-		void insertNewNode(void *, void *);
+		void insertNewNode(node **, void *, void *);
 		void addToNode(node *, void *, void *);
 		void increaseSize(node *);
-		void initArray(node *);
+		void initArray(node **);
 	};
 }
 #endif //JSONPARSER_H
