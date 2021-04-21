@@ -17,34 +17,58 @@ JSONParser::~JSONParser()
 void JSONParser::parseResponse(cpr::Response res, node *head_ref)
 {
 	string result = static_cast<string>(res.text);
-	string key, value;
+	result.pop_back();
+	string key, value, temp;
 	bool openQuotes = false;
 	bool keyFound = false;
 	bool bracketOpen = false;
+	bool nonInfo = true;
 	int quotes = 0;
 	for (int x = 1; x < result.length(); x++)
 	{
-		string temp;
-		while (openQuotes == false)
+		if (result[x] != '[' && nonInfo == true)
+			continue;
+		else if (result[x]=='[' && nonInfo==true)
+			nonInfo = false;
+		else if (result[x] != '[' && nonInfo == false)
 		{
 			if (result[x] == '{')
 			{
 				bracketOpen = true;
-				//maybe add node here
 			}
 			else if (result[x] == '}')
 			{
 				bracketOpen = false;
-				//maybe add node here
+				//insertNode here
 			}
 			if (result[x] == '\"')
 			{
 				x += 1;
 				if (quotes == 0)
 				{
+					temp += result[x];
 					quotes += 1;
 					openQuotes = true;
 				}
+				else if (quotes == 1)
+				{
+					openQuotes = false;
+					quotes = 0;
+					if (keyFound == true)
+					{
+						value = temp;
+						temp = "";
+					}
+					else if (keyFound == false)
+					{
+						key = temp;
+						temp = "";
+						cout << key << endl;
+						cout << temp << endl;
+						//addtoNode here
+					}
+				}
+				if (bracketOpen==true && openQuotes==true)
 			}
 		}
 	}
@@ -53,11 +77,13 @@ void JSONParser::parseResponse(cpr::Response res, node *head_ref)
 //insert new node into linked list
 void JSONParser::insertNewNode(node **ref, void *data, void *dataTwo)
 {
+	string *key = static_cast<string *>(data);
+	string *value = static_cast<string *>(dataTwo);
 	struct node *newNode = new node;
 	struct node *end = HEAD;
 	newNode->next = NULL;
-	newNode->data->key = data;
-	newNode->data->value = dataTwo;
+	newNode->data->key = key;
+	newNode->data->value = value;
 	if (HEAD == NULL)
 	{
 		HEAD = newNode;
@@ -66,6 +92,7 @@ void JSONParser::insertNewNode(node **ref, void *data, void *dataTwo)
 	while (end->next != NULL)
 		end = end->next;
 	end->next = newNode;
+	newNode->previous = end;
 	return;
 }
 

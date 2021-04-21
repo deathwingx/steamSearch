@@ -16,8 +16,9 @@ extern "C"
 		struct node
 		{
 			pair *data;
-			int size = 0;
+			int size = 1;
 			node *next;
+			node *previous;
 		};
 		node *HEAD = NULL;
 		//functions
