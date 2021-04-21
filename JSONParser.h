@@ -12,6 +12,7 @@ extern "C"
 		{
 			void *key;
 			void *value;
+			int size = 0;
 		};
 		struct node
 		{
