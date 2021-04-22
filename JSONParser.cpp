@@ -43,7 +43,6 @@ void JSONParser::parseResponse(cpr::Response res)
 	string result = static_cast<string>(res.text);
 	node *current = HEAD;
 	static int size = 0, time = 0;
-	result.pop_back();
 	string temp;
 	string *keyPtr, *valuePtr;
 	bool openQuotes = false;
@@ -157,6 +156,7 @@ JSONParser::node *JSONParser::insertNewNode()
 //add data to node
 void JSONParser::addToNode(node *current, void *k, void *v, int size)
 {
+	pair *newData = (pair *)malloc(sizeof(2 * sizeof(string[size])));
 	string *newKey = static_cast<string *>(k);
 	string *newValue = static_cast<string *>(v);
 	string *keyPtr = new string[size];
@@ -174,6 +174,7 @@ void JSONParser::addToNode(node *current, void *k, void *v, int size)
 		keyPtr = newKey;
 		valuePtr = newValue;
 	}
+	current->data = newData;
 	current->data->key = keyPtr;
 	current->data->value = valuePtr;
 }
@@ -216,6 +217,7 @@ void JSONParser::printList(node *head_ref)
 			cout << "key: " << key << endl;
 			cout << "value: " << value << endl;
 		}
+		cout << "next node\n" << endl;
 		head_ref = head_ref->next;
 	}
 }

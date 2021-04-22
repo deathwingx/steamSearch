@@ -129,7 +129,7 @@ int main()
 	if (error == true)
 		exit(1);
 	search.JSP.parseResponse(res);
-	//search.JSP.printList(search.JSP.HEAD);
+	search.JSP.printList(search.JSP.HEAD);
 	int answer = -1;
 	//cout << res.text << endl;
 	while (answer != 7)
