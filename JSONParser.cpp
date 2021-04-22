@@ -1,7 +1,7 @@
 #include <iostream>
 #include "cpr/include/cpr/cpr.h"
 #include "JSONParser.h"
-#include <cstring>
+#include <string>
 
 using namespace std;
 
@@ -23,8 +23,6 @@ void *JSONParser::increaseKeySize(void *k, int size)
 		for (int x = 0; x < size; x++)
 			*(keyPtr + x) = *(newKey + x);
 	}
-	//for (int x = 0; x < size-1; x++)
-	//cout << *(strPtr + x) << endl;
 	return keyPtr;
 }
 
@@ -37,8 +35,6 @@ void *JSONParser::increaseValueSize(void *v, int size)
 		for (int x = 0; x < size; x++)
 			*(valuePtr + x) = *(newValue + x);
 	}
-	for (int x = 0; x < size - 1; x++)
-		cout << *(valuePtr + x) << endl;
 	return valuePtr;
 }
 //parse the http respone
@@ -46,12 +42,10 @@ void JSONParser::parseResponse(cpr::Response res)
 {
 	string result = static_cast<string>(res.text);
 	node *current = HEAD;
-	static int size = 0;
+	static int size = 0, time = 0;
 	result.pop_back();
 	string temp;
 	string *keyPtr, *valuePtr;
-	//keyPtr = key;
-	//valuePtr = value;
 	bool openQuotes = false;
 	bool keyFound = false;
 	bool bracketOpen = false;
@@ -59,6 +53,8 @@ void JSONParser::parseResponse(cpr::Response res)
 	int quotes = 0;
 	for (int x = 1; x < result.length(); x++)
 	{
+		if (result[x] == ']')
+			break;
 		if (result[x] != '[' && nonInfo == true)
 			continue;
 		else if (result[x] == '[' && nonInfo == true)
@@ -75,6 +71,11 @@ void JSONParser::parseResponse(cpr::Response res)
 			else if (result[x] == '}')
 			{
 				bracketOpen = false;
+				//add to node here add both key and value at once
+				addToNode(current, keyPtr, valuePtr, size);
+				time += 1;
+				cout << time << endl;
+				//clear keyPtr and valuePtr
 			}
 			else if (result[x] == ':')
 			{
@@ -87,18 +88,12 @@ void JSONParser::parseResponse(cpr::Response res)
 			}
 			else if (result[x] == ',' && keyFound == true)
 			{
-				//cout << value << endl;
-				//size += 1;
 				current->size = size;
 				valuePtr = (string *)increaseValueSize(valuePtr, size);
-				*(valuePtr+(size-1)) = temp;
+				*(valuePtr + (size - 1)) = temp;
 				temp = "";
-				//cout << size << endl;
-				//addToNode(current, keyPtr, valuePtr, size);
 				keyFound = false;
 				quotes = 0;
-
-				//addtoNode here
 				continue;
 			}
 			if (result[x] == '\"')
@@ -115,19 +110,12 @@ void JSONParser::parseResponse(cpr::Response res)
 					quotes = 0;
 					if (keyFound == true)
 					{
-
-						//size += 1;
 						current->size = size;
 						valuePtr = (string *)increaseValueSize(valuePtr, size);
 						int a = 1;
-						*(valuePtr+(size-1)) = temp;
-						//memcpy(valuePtr[size], &temp, temp.size() + 1);
+						*(valuePtr + (size - 1)) = temp;
 						temp = "";
-						//cout << size << endl;
-						//cout << value << endl;
 						keyFound = false;
-						//addToNode(current, keyPtr, valuePtr, size);
-						//addtoNode here
 						continue;
 					}
 					else if (keyFound == false)
@@ -146,6 +134,7 @@ void JSONParser::parseResponse(cpr::Response res)
 				temp += result[x];
 		}
 	}
+	return;
 }
 
 //insert new node into linked list
@@ -168,6 +157,25 @@ JSONParser::node *JSONParser::insertNewNode()
 //add data to node
 void JSONParser::addToNode(node *current, void *k, void *v, int size)
 {
+	string *newKey = static_cast<string *>(k);
+	string *newValue = static_cast<string *>(v);
+	string *keyPtr = new string[size];
+	string *valuePtr = new string[size];
+	if (size > 1)
+	{
+		for (int x = 0; x < size; x++)
+		{
+			*(keyPtr + x) = *(newKey + x);
+			*(valuePtr + x) = *(newValue + x);
+		}
+	}
+	else
+	{
+		keyPtr = newKey;
+		valuePtr = newValue;
+	}
+	current->data->key = keyPtr;
+	current->data->value = valuePtr;
 }
 
 /*

@@ -13,7 +13,7 @@ using namespace std;
 bool checkInput(string input)
 {
 	bool isANum = false;
-	if(isdigit(input[0]))
+	if (isdigit(input[0]))
 		isANum = true;
 	return isANum;
 }
@@ -31,9 +31,9 @@ int menu()
 	cout << "What is your answer: ";
 	cin >> ans;
 	bool isaNUM = checkInput(ans);
-	if (isaNUM==true)
+	if (isaNUM == true)
 		return stoi(ans);
-	else 
+	else
 	{
 		cout << "\nInvalid Input, Try Again.\n\n";
 		menu();
@@ -124,9 +124,9 @@ int main()
 {
 	steamSearch search;
 	cpr::Parameters param = cpr::Parameters{{"key", WEBAPI_KEY}, {"steamid", STEAMID}};
-	cpr::Response res = cpr::Get(cpr::Url{"https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v1/"}, param);
+	cpr::Response res = cpr::Get(cpr::Url{"https://api.steampowered.com/ISteamUser/GetFriendList/v1/"}, param);
 	bool error = checkForError(res);
-	if (error==true)
+	if (error == true)
 		exit(1);
 	search.JSP.parseResponse(res);
 	//search.JSP.printList(search.JSP.HEAD);
