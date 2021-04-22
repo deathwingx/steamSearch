@@ -1,6 +1,6 @@
 #ifndef JSONPARSER_H
 #define JSONPARSER_H
-#include "cpr/cpr.h"
+#include "cpr/include/cpr/cpr.h"
 
 extern "C"
 {
