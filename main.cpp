@@ -2,7 +2,7 @@
 #include "JSONParser.h"
 #include <dlfcn.h>
 #include <iostream>
-#include "gitfiles/include/cpr/cpr.h"
+#include "cpr/include/cpr/cpr.h"
 #include <string>
 
 #define WEBAPI_KEY "743F1162E2E66B718D5C10B2CD9FF01B"
@@ -124,11 +124,12 @@ int main()
 {
 	steamSearch search;
 	cpr::Parameters param = cpr::Parameters{{"key", WEBAPI_KEY}, {"steamid", STEAMID}};
-	cpr::Response res = cpr::Get(cpr::Url{"https://api.steampowered.com/ISteamUser/GetFriendList/v1/"}, param);
+	cpr::Response res = cpr::Get(cpr::Url{"https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v1/"}, param);
 	bool error = checkForError(res);
 	if (error==true)
 		exit(1);
 	search.JSP.parseResponse(res);
+	//search.JSP.printList(search.JSP.HEAD);
 	int answer = -1;
 	//cout << res.text << endl;
 	while (answer != 7)

@@ -1,6 +1,6 @@
 #ifndef JSONPARSER_H
 #define JSONPARSER_H
-#include "gitfiles/include/cpr/cpr.h"
+#include "cpr/include/cpr/cpr.h"
 
 extern "C"
 {
@@ -12,12 +12,13 @@ extern "C"
 		{
 			void *key;
 			void *value;
-		};
+				};
 		struct node
 		{
 			pair *data;
 			node *next;
 			node *previous;
+			int size = 0;
 		};
 		node *HEAD = NULL;
 		//functions

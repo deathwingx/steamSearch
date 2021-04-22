@@ -1,6 +1,6 @@
 #ifndef STEAMSEARCH_H
 #define STEAMSEARCH_H
-#include "gitfiles/include/cpr/cpr.h"
+#include "cpr/include/cpr/cpr.h"
 #include "JSONParser.h"
 
 extern "C"

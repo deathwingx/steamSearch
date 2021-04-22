@@ -1,5 +1,5 @@
 #include <iostream>
-#include "gitfiles/include/cpr/cpr.h"
+#include "cpr/include/cpr/cpr.h"
 #include "JSONParser.h"
 #include <string>
 
@@ -22,6 +22,8 @@ void JSONParser::parseResponse(cpr::Response res)
 	result.pop_back();
 	string key, value, temp;
 	string *k, *v;
+	*k = key;
+	*v = value;
 	bool openQuotes = false;
 	bool keyFound = false;
 	bool bracketOpen = false;
@@ -61,11 +63,12 @@ void JSONParser::parseResponse(cpr::Response res)
 				temp = "";
 				//cout << value << endl;
 				size += 1;
-				cout << size << endl;
-				//addToNode(current, &key, &value);
+				current->size = size;
+				//cout << size << endl;
+				addToNode(current, &key, &value, size);
 				keyFound = false;
-				value = "";
 				key = "";
+				value = "";
 				quotes = 0;
 
 				//addtoNode here
@@ -85,13 +88,15 @@ void JSONParser::parseResponse(cpr::Response res)
 					quotes = 0;
 					if (keyFound == true)
 					{
+						v = (string*)realloc(v, sizeof(string));
 						value = temp;
 						temp = "";
 						size += 1;
-						cout << size << endl;
+						current->size = size;
+						//cout << size << endl;
 						//cout << value << endl;
 						keyFound = false;
-						//addToNode(current, &key, &value);
+						addToNode(current, &key, &value, size);
 						value = "";
 						key = "";
 						//addtoNode here
@@ -124,15 +129,27 @@ JSONParser::node *JSONParser::insertNewNode()
 		HEAD = newNode;
 		return newNode;
 	}
-	while (last->next!=NULL)
+	while (last->next != NULL)
 		last = last->next;
 	last->next = newNode;
 	return newNode;
 }
 
-void JSONParser::addToNode(node *current, void *key, void *value, int size)
+//add data to node
+void JSONParser::addToNode(node *current, void *k, void *v, int size)
 {
-
+	string *newKey = (string *)malloc(sizeof(string *));
+	newKey = static_cast<string *>(k);
+	string strNewKey = *newKey;
+	string *newValue = (string *)malloc(sizeof(string *));
+	newValue = static_cast<string *>(v);
+	string strNewValue = *newValue;
+	current->data = (pair *)realloc(current->data, (size * 2) * sizeof(pair));
+	(current->data[size - 1].key) = (string *)realloc(current->data, size * sizeof(string *));
+	(current->data[size - 1].value) = (string *)realloc(current->data, size * sizeof(string *));
+	(current->data[size - 1].key) = static_cast<string *>(&strNewKey);
+	(current->data[size - 1].value) = static_cast<string *>(&strNewValue);
+	int a = 1;
 }
 
 /*
@@ -146,21 +163,33 @@ void JSONParser::printList(node *head_ref)
 {
 	if (head_ref->next == NULL)
 	{
-		string *k = static_cast<string *>(head_ref->data->key);
-		string *v = static_cast<string *>(head_ref->data->value);
-		string key = *k;
-		string value = *v;
-		cout << "key: " << key << endl;
-		cout << "value: " << value << endl;
+
+		for (int x = 0; x < head_ref->size; x++)
+		{
+			//string key = (head_ref->data + x)->key;
+			//string value = (head_ref->data + x)->value;
+			string *k = static_cast<string *>(head_ref->data->key);
+			string key = *k;
+			string *v = static_cast<string *>(head_ref->data->value);
+			string value = *v;
+			cout << "key: " << key << endl;
+			cout << "value: " << value << endl;
+		}
 	}
 	while (head_ref->next != NULL)
 	{
-		string *k = static_cast<string *>(head_ref->data->key);
-		string *v = static_cast<string *>(head_ref->data->value);
-		string key = *k;
-		string value = *v;
-		cout << "key: " << key << endl;
-		cout << "value: " << value << endl;
+
+		for (int x = 0; x < head_ref->size; x++)
+		{
+			//string key = (head_ref->data + x)->key;
+			//string value = (head_ref->data + x)->value;
+			string *k = static_cast<string *>(head_ref->data->key);
+			string key = *k;
+			string *v = static_cast<string *>(head_ref->data->value);
+			string value = *v;
+			cout << "key: " << key << endl;
+			cout << "value: " << value << endl;
+		}
 		head_ref = head_ref->next;
 	}
 }
