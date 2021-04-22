@@ -72,8 +72,6 @@ void JSONParser::parseResponse(cpr::Response res)
 				bracketOpen = false;
 				//add to node here add both key and value at once
 				addToNode(current, keyPtr, valuePtr, size);
-				time += 1;
-				cout << time << endl;
 				//clear keyPtr and valuePtr
 			}
 			else if (result[x] == ':')
@@ -196,9 +194,9 @@ void JSONParser::printList(node *head_ref)
 			//string key = (head_ref->data + x)->key;
 			//string value = (head_ref->data + x)->value;
 			string *k = static_cast<string *>(head_ref->data->key);
-			string key = *k;
+			string key = *(k + x);
 			string *v = static_cast<string *>(head_ref->data->value);
-			string value = *v;
+			string value = *(v + x);
 			cout << "key: " << key << endl;
 			cout << "value: " << value << endl;
 		}
@@ -211,13 +209,13 @@ void JSONParser::printList(node *head_ref)
 			//string key = (head_ref->data + x)->key;
 			//string value = (head_ref->data + x)->value;
 			string *k = static_cast<string *>(head_ref->data->key);
-			string key = *k;
+			string key = *(k + x);
 			string *v = static_cast<string *>(head_ref->data->value);
-			string value = *v;
+			string value = *(v + x);
 			cout << "key: " << key << endl;
 			cout << "value: " << value << endl;
 		}
-		cout << "next node\n" << endl;
+		cout << "\nnext node" << endl;
 		head_ref = head_ref->next;
 	}
 }

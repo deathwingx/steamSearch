@@ -110,32 +110,21 @@ bool checkForError(cpr::Response error)
 	return true;
 }
 
-/* void count(JSONParser::node* ref)
-{
-	int size = 0;
-	while(ref->next!=NULL)
-	{
-		size += 1;
-		ref = ref->next;
-	}
-	cout << "size: " <<size<< endl;
-} */
 int main()
 {
 	steamSearch search;
 	cpr::Parameters param = cpr::Parameters{{"key", WEBAPI_KEY}, {"steamid", STEAMID}};
-	cpr::Response res = cpr::Get(cpr::Url{"https://api.steampowered.com/ISteamUser/GetFriendList/v1/"}, param);
+	cpr::Response res = cpr::Get(cpr::Url{"https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/"}, param);
 	bool error = checkForError(res);
 	if (error == true)
 		exit(1);
 	search.JSP.parseResponse(res);
 	search.JSP.printList(search.JSP.HEAD);
 	int answer = -1;
-	//cout << res.text << endl;
-	while (answer != 7)
+	/* while (answer != 7)
 	{
 		answer = menu();
 		action(answer, search);
-	}
+	} */
 	return 0;
 }
