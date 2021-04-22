@@ -12,12 +12,11 @@ extern "C"
 		{
 			void *key;
 			void *value;
-				};
+		};
 		struct node
 		{
 			pair *data;
 			node *next;
-			node *previous;
 			int size = 0;
 		};
 		node *HEAD = NULL;
@@ -30,6 +29,8 @@ extern "C"
 	private:
 		node *insertNewNode();
 		void addToNode(node *, void *, void *, int);
+		void *increaseKeySize(void *, int);
+		void *increaseValueSize(void *, int);
 	};
 }
 #endif //JSONPARSER_H
