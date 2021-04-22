@@ -14,10 +14,11 @@ JSONParser::~JSONParser()
 {
 }
 //parse the http respone
-void JSONParser::parseResponse(cpr::Response res, node *head_ref)
+void JSONParser::parseResponse(cpr::Response res)
 {
 	string result = static_cast<string>(res.text);
-	node *current = head_ref;
+	node *current = HEAD;
+	static int size = 0;
 	result.pop_back();
 	string key, value, temp;
 	string *k, *v;
@@ -37,7 +38,8 @@ void JSONParser::parseResponse(cpr::Response res, node *head_ref)
 			if (result[x] == '{')
 			{
 				bracketOpen = true;
-				current = insertNewNode(&HEAD);
+				current = insertNewNode();
+				size = 0;
 				continue;
 			}
 			else if (result[x] == '}')
@@ -57,13 +59,15 @@ void JSONParser::parseResponse(cpr::Response res, node *head_ref)
 			{
 				value = temp;
 				temp = "";
-				cout << value << endl;
-				addToNode(current, &key, &value);
+				//cout << value << endl;
+				size += 1;
+				cout << size << endl;
+				//addToNode(current, &key, &value);
 				keyFound = false;
 				value = "";
 				key = "";
 				quotes = 0;
-				
+
 				//addtoNode here
 				continue;
 			}
@@ -83,9 +87,11 @@ void JSONParser::parseResponse(cpr::Response res, node *head_ref)
 					{
 						value = temp;
 						temp = "";
-						cout << value << endl;
+						size += 1;
+						cout << size << endl;
+						//cout << value << endl;
 						keyFound = false;
-						addToNode(current, &key, &value);
+						//addToNode(current, &key, &value);
 						value = "";
 						key = "";
 						//addtoNode here
@@ -95,7 +101,7 @@ void JSONParser::parseResponse(cpr::Response res, node *head_ref)
 					{
 						key = temp;
 						temp = "";
-						cout << key << "   ";
+						//cout << key << "   ";
 						keyFound = true;
 					}
 				}
@@ -108,61 +114,27 @@ void JSONParser::parseResponse(cpr::Response res, node *head_ref)
 }
 
 //insert new node into linked list
-JSONParser::node *JSONParser::insertNewNode(node **ref)
+JSONParser::node *JSONParser::insertNewNode()
 {
-	size += 1;
-	cout << size << endl;
-	string *key, *value;
-	struct node *newNode = (node*)malloc(sizeof(node));
-	struct node *end = HEAD;
-	//key = (string *)malloc(size * sizeof(string*));
-	//value = (string *)malloc(size * sizeof(string*));
+	node *newNode = new node;
+	node *last = HEAD;
 	newNode->next = NULL;
-	//newNode->data->key = static_cast<void *>(key);
-	//newNode->data->value = static_cast<void *>(value);
 	if (HEAD == NULL)
 	{
 		HEAD = newNode;
-		return HEAD;
+		return newNode;
 	}
-	node *temp = HEAD;
-	temp = (node *)realloc(HEAD, size * sizeof(HEAD));
-	HEAD = temp;
-	end = HEAD;
-	while (end->next != NULL)
-		end = end->next;
-	end->next = newNode;
-	newNode->previous = end;
+	while (last->next!=NULL)
+		last = last->next;
+	last->next = newNode;
 	return newNode;
 }
 
-void JSONParser::addToNode(node *current, void *key, void *value)
+void JSONParser::addToNode(node *current, void *key, void *value, int size)
 {
-	current->data->size += 1;
-	string *k, *v;
-	k = (string *)malloc(size * sizeof(string *));
-	v = (string *)malloc(size * sizeof(string *));
-	current->data->key = k;
-	current->data->value = v;
-	current->data->key = key;
-	current->data->value = value;
+
 }
 
-void JSONParser::increaseSize(node *current)
-{
-	/* 	//need help here
-	int newSize = current->size + 5;
-	pair *newPair = (pair *)malloc((newSize) * sizeof(pair *));
-	if (newPair == NULL)
-		cout << "failed to allocate memory" << endl;
-	else
-	{
-		for (int x = 0; x < current->size; x++)
-			//current->data=newPair;
-			current->size += 5;
-	}
-	return; */
-}
 /*
 *************************************
 *************************************

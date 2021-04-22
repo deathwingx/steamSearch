@@ -3,15 +3,24 @@
 #include <dlfcn.h>
 #include <iostream>
 #include "gitfiles/include/cpr/cpr.h"
+#include <string>
 
 #define WEBAPI_KEY "743F1162E2E66B718D5C10B2CD9FF01B"
 #define STEAMID "76561198081634808"
 
 using namespace std;
 
+bool checkInput(string input)
+{
+	bool isANum = false;
+	if(isdigit(input[0]))
+		isANum = true;
+	return isANum;
+}
 int menu()
 {
-	int ans;
+	string ans;
+	int numans;
 	cout << "1. Search for User" << endl;
 	cout << "2. Search For Game" << endl;
 	cout << "3. Search for Friend" << endl;
@@ -21,7 +30,15 @@ int menu()
 	cout << "7. Quit" << endl;
 	cout << "What is your answer: ";
 	cin >> ans;
-	return ans;
+	bool isaNUM = checkInput(ans);
+	if (isaNUM==true)
+		return stoi(ans);
+	else 
+	{
+		cout << "\nInvalid Input, Try Again.\n\n";
+		menu();
+	}
+	return 7;
 }
 
 void action(int ans, steamSearch &searchsteam)
@@ -93,17 +110,25 @@ bool checkForError(cpr::Response error)
 	return true;
 }
 
+/* void count(JSONParser::node* ref)
+{
+	int size = 0;
+	while(ref->next!=NULL)
+	{
+		size += 1;
+		ref = ref->next;
+	}
+	cout << "size: " <<size<< endl;
+} */
 int main()
 {
 	steamSearch search;
 	cpr::Parameters param = cpr::Parameters{{"key", WEBAPI_KEY}, {"steamid", STEAMID}};
 	cpr::Response res = cpr::Get(cpr::Url{"https://api.steampowered.com/ISteamUser/GetFriendList/v1/"}, param);
-	JSONParser jsp;
 	bool error = checkForError(res);
 	if (error==true)
 		exit(1);
-	jsp.parseResponse(res, jsp.HEAD);
-	//jsp.printList(jsp.HEAD);
+	search.JSP.parseResponse(res);
 	int answer = -1;
 	//cout << res.text << endl;
 	while (answer != 7)

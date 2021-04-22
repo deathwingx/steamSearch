@@ -1,6 +1,7 @@
 #ifndef STEAMSEARCH_H
 #define STEAMSEARCH_H
 #include "gitfiles/include/cpr/cpr.h"
+#include "JSONParser.h"
 
 extern "C"
 {
@@ -18,6 +19,7 @@ extern "C"
 		void showProfile();
 		void showFriendsProfile(char *);
 		//variables
+		JSONParser JSP;
 
 	private:
 		//variables

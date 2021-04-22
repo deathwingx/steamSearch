@@ -12,7 +12,6 @@ extern "C"
 		{
 			void *key;
 			void *value;
-			int size = 0;
 		};
 		struct node
 		{
@@ -24,15 +23,12 @@ extern "C"
 		//functions
 		JSONParser();
 		~JSONParser();
-		void parseResponse(cpr::Response, node *);
+		void parseResponse(cpr::Response);
 		void printList(node *);
 
 	private:
-		node *insertNewNode(node **);
-		void addToNode(node *, void *, void *);
-		void increaseSize(node *);
-		void initArray(node **);
-		int size = 1;
+		node *insertNewNode();
+		void addToNode(node *, void *, void *, int);
 	};
 }
 #endif //JSONPARSER_H
