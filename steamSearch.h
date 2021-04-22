@@ -1,6 +1,6 @@
 #ifndef STEAMSEARCH_H
 #define STEAMSEARCH_H
-#include "cpr/include/cpr/cpr.h"
+#include "gitfiles/include/cpr/cpr.h"
 
 extern "C"
 {
