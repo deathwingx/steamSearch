@@ -49,7 +49,7 @@ void JSONParser::parseResponse(cpr::Response res)
 	static int size = 0;
 	result.pop_back();
 	string temp;
-	string *keyPtr[1], *valuePtr[1];
+	string *keyPtr, *valuePtr;
 	//keyPtr = key;
 	//valuePtr = value;
 	bool openQuotes = false;
@@ -90,8 +90,8 @@ void JSONParser::parseResponse(cpr::Response res)
 				//cout << value << endl;
 				//size += 1;
 				current->size = size;
-				*valuePtr = (string *)increaseValueSize(valuePtr, size);
-				*valuePtr[size - 1] = temp;
+				valuePtr = (string *)increaseValueSize(valuePtr, size);
+				*(valuePtr+(size-1)) = temp;
 				temp = "";
 				//cout << size << endl;
 				//addToNode(current, keyPtr, valuePtr, size);
@@ -118,9 +118,9 @@ void JSONParser::parseResponse(cpr::Response res)
 
 						//size += 1;
 						current->size = size;
-						*valuePtr = (string *)increaseValueSize(*valuePtr, size);
+						valuePtr = (string *)increaseValueSize(valuePtr, size);
 						int a = 1;
-						*valuePtr[size-1] = temp;
+						*(valuePtr+(size-1)) = temp;
 						//memcpy(valuePtr[size], &temp, temp.size() + 1);
 						temp = "";
 						//cout << size << endl;
@@ -133,8 +133,8 @@ void JSONParser::parseResponse(cpr::Response res)
 					else if (keyFound == false)
 					{
 						size += 1;
-						*keyPtr = (string *)increaseKeySize(*keyPtr, size);
-						*keyPtr[size - 1] = temp;
+						keyPtr = (string *)increaseKeySize(keyPtr, size);
+						*(keyPtr + (size - 1)) = temp;
 						temp = "";
 						//cout << key << "   ";
 						keyFound = true;
