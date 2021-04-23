@@ -13,11 +13,6 @@ using namespace std;
 int main()
 {
 	steamSearch search;
-	int answer = -1;
-	while (answer != 5)
-	{
-		answer = search.JSP.menu();
-		search.JSP.action(answer);
-	}
+	search.JSP.menu();
 	return 0;
 }

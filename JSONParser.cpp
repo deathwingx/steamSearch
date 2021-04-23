@@ -36,11 +36,6 @@ void *JSONParser::increaseValueSize(void *v, int size)
 		for (int x = 0; x < size; x++)
 			*(valuePtr + x) = *(newValue + x);
 	}
-	for (int x = 0; x < size; x++)
-	{
-		//cout << x << ": " << *(valuePtr + x) << endl;
-		//cout << x << ": " << *(newValue + x) << endl;
-	}
 	return valuePtr;
 }
 //parse the http respone
@@ -74,11 +69,9 @@ void JSONParser::parseResponse(cpr::Response res)
 			else if (result[x] == '}')
 			{
 				bracketOpen = false;
-				//add to node here add both key and value at once
 				valuePtr = (string *)increaseValueSize(valuePtr, size);
 				*(valuePtr + (size - 1)) = temp;
 				addToNode(current, keyPtr, valuePtr, size);
-				//clear keyPtr and valuePtr
 			}
 			else if (result[x] == ':')
 			{
@@ -94,7 +87,6 @@ void JSONParser::parseResponse(cpr::Response res)
 				current->size = size;
 				valuePtr = (string *)increaseValueSize(valuePtr, size);
 				*(valuePtr + (size - 1)) = temp;
-				//cout << temp << endl;
 				temp = "";
 				keyFound = false;
 				quotes = 0;
@@ -118,7 +110,6 @@ void JSONParser::parseResponse(cpr::Response res)
 						valuePtr = (string *)increaseValueSize(valuePtr, size);
 						int a = 1;
 						*(valuePtr + (size - 1)) = temp;
-						//cout << temp << endl;
 						temp = "";
 						keyFound = false;
 						continue;
@@ -129,7 +120,6 @@ void JSONParser::parseResponse(cpr::Response res)
 						keyPtr = (string *)increaseKeySize(keyPtr, size);
 						*(keyPtr + (size - 1)) = temp;
 						temp = "";
-						//cout << key << "   ";
 						keyFound = true;
 					}
 				}
@@ -194,9 +184,9 @@ DONT FORGET TO REACST BEFORE PRINTING
 */
 void JSONParser::printList(node *head_ref)
 {
+	cout << endl;
 	if (head_ref->next == NULL)
 	{
-
 		for (int x = 0; x < head_ref->size; x++)
 		{
 			string *k = static_cast<string *>(head_ref->data->key);
@@ -205,11 +195,9 @@ void JSONParser::printList(node *head_ref)
 			string value = *(v + x);
 			cout << key << ": " << value << endl;
 		}
-		string *k = static_cast<string *>(head_ref->data->key);
-		string key = *(k + head_ref->size - 1);
-		string *v = static_cast<string *>(head_ref->data->value);
-		string value = *(v + head_ref->size - 1);
-		cout << key << ": " << value << endl;
+		cout << endl;
+		menu();
+		return;
 	}
 	while (head_ref->next != NULL)
 	{
@@ -220,9 +208,10 @@ void JSONParser::printList(node *head_ref)
 			string key = *(k + x);
 			string *v = static_cast<string *>(head_ref->data->value);
 			string value = *(v + x);
-			cout << key << ": " << value << endl;
+			cout << key << ": " << value << "\t";
 		}
-		cout << "\nnext node" << endl;
+		//cout << "\n\nnext node" << endl;
+		cout << endl;
 		head_ref = head_ref->next;
 	}
 	for (int x = 0; x <= head_ref->size; x++)
@@ -231,8 +220,9 @@ void JSONParser::printList(node *head_ref)
 		string key = *(k + x);
 		string *v = static_cast<string *>(head_ref->data->value);
 		string value = *(v + x);
-		cout << key << ": " << value << endl;
+		cout << key << ": " << value << "\t";
 	}
+	cout << endl;
 	menu();
 }
 
@@ -240,22 +230,24 @@ int JSONParser::menu()
 {
 	string ans;
 	int numans;
-	cout << "1. Show Profile" << endl;
-	cout << "2. See Library" << endl;
-	cout << "3. See Friend List" << endl;
-	cout << "4. See Recently Played" << endl;
-	cout << "5. Quit" << endl;
-	cout << "What is your answer: ";
-	cin >> ans;
-	bool isaNUM = checkInput(&ans);
-	if (isaNUM == true)
-		return stoi(ans);
-	else
+	while (numans != 5)
 	{
-		cout << "\nInvalid Input, Try Again.\n\n";
-		menu();
+		cout << "1. Show Profile" << endl;
+		cout << "2. See Library" << endl;
+		cout << "3. See Friend List" << endl;
+		cout << "4. See Recently Played" << endl;
+		cout << "5. Quit" << endl;
+		cout << "What is your answer: ";
+		cin >> ans;
+		bool isaNUM = checkInput(&ans);
+		if (isaNUM == true)
+			action(stoi(ans));
+		else
+		{
+			cout << "\nInvalid Input, Try Again.\n\n";
+		}
 	}
-	return 7;
+	return 5;
 }
 
 bool JSONParser::checkInput(void *i)
