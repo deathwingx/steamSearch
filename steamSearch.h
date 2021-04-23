@@ -11,18 +11,14 @@ extern "C"
 		//functions
 		steamSearch();
 		~steamSearch();
-		void searchFriend(char *);
-		void searchUser(char *);
-		void searchGame(char *);
-		void timePlayed();
 		void seeLibrary();
 		void showProfile();
-		void showFriendsProfile(char *);
+		void recentlyPlayed();
+		void seeFriendsList();
+		
+		
 		//variables
 		JSONParser JSP;
-
-	private:
-		//variables
 	};
 }
 #endif //STEAMSEARCH_H
